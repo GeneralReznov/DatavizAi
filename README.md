@@ -7,6 +7,10 @@ A Flask-based web application that automates the full lifecycle of NSS (National
 
 ---
 
+Live deployment Link:[datavizai.onrender.com](https://datavizai.onrender.com/)
+
+---
+
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
