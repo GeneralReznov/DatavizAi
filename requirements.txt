@@ -12,3 +12,4 @@ groq==1.4.0
 google-genai==2.8.0
 PyMuPDF==1.27.2.3
 python-dotenv
+gunicorn>=23.0.0
