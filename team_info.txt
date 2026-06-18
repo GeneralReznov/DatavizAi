@@ -1,0 +1,10 @@
+Team Name: Outlier Coders
+Institute: Bhagwan Parshuram Institute of Technology
+
+Team Members:
+1.	Parth Sharma – Team Leader
+2.	Sumukhi Tripathi – Team Member
+3.	Mokshit Kaushik – Team Member
+
+
+Github Repository Link: https://github.com/GeneralReznov/DatavizAi
