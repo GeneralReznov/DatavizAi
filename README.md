@@ -18,6 +18,9 @@ A Flask-based web application that automates the full lifecycle of NSS (National
 7. [Tech Stack](#tech-stack)
 
 ---
+<img width="1280" height="687" alt="WhatsApp Image 2026-06-18 at 4 32 57 PM" src="https://github.com/user-attachments/assets/1a8e86ab-e732-48e2-8e25-a877dce21641" />
+<img width="1280" height="687" alt="WhatsApp Image 2026-06-18 at 4 33 28 PM" src="https://github.com/user-attachments/assets/a0b38f1b-85f3-436f-811b-2569495459c2" />
+<img width="1280" height="687" alt="WhatsApp Image 2026-06-18 at 4 34 05 PM" src="https://github.com/user-attachments/assets/0f5489c3-1442-4612-9ec4-66fd8b7f18e8" />
 
 ## Prerequisites
 
@@ -99,6 +102,9 @@ Then add at the top of `flask_app/app.py` (if not already present):
 from dotenv import load_dotenv
 load_dotenv()
 ```
+<img width="1280" height="687" alt="WhatsApp Image 2026-06-18 at 4 33 12 PM" src="https://github.com/user-attachments/assets/b51d6161-2dc5-4a5a-9b20-f11fe42bd5fa" />
+
+<img width="1280" height="687" alt="WhatsApp Image 2026-06-18 at 4 34 35 PM" src="https://github.com/user-attachments/assets/45ab1be5-a8fd-4d84-9d30-683f99d326fd" />
 
 ---
 
