@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>DataVizAI Statistical Analytical Report — 18 June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<style>
+:root{--primary:#0f172a;--primary-accent:#1e3a8a;--secondary:#475569;--accent:#b45309;--bg-light:#f8fafc;--bg-white:#ffffff;--border:#cbd5e1;--text-dark:#0f172a;--text-muted:#64748b}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#0f172a;line-height:1.6}
+h1,h2,h3,h4,h5,h6{font-family:'Playfair Display',Georgia,serif;color:#0f172a;font-weight:700}
+.navbar{background:#0f172a;border-bottom:2px solid #1e3a8a;padding:12px 0;position:sticky;top:0;z-index:1000}
+.navbar-content{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
+.logo-text{color:#fff;font-size:1.15rem;font-weight:600;font-family:'Playfair Display',serif}
+.nav-links a{color:#cbd5e1;text-decoration:none;font-weight:500;font-size:0.88rem;margin-left:20px;transition:color 0.2s}
+.nav-links a:hover{color:#fff}
+.report-container{max-width:1000px;margin:28px auto;background:#fff;border:1px solid #cbd5e1;padding:32px 44px;box-shadow:0 4px 6px -1px rgba(0,0,0,.05)}
+.cover-banner{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);color:#fff;padding:28px 32px 22px;margin-bottom:0;text-align:left}
+.cover-banner-label{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:#C8962A;margin-bottom:8px}
+.cover-title{font-size:2rem;margin-bottom:6px;color:#fff;letter-spacing:-.02em;font-family:'Playfair Display',serif}
+.cover-subtitle{font-size:1rem;color:#cbd5e1;font-style:italic;margin-bottom:0}
+.cover-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;border:1px solid #cbd5e1;border-top:none}
+.cover-meta-cell{padding:10px 16px;border-bottom:1px solid #cbd5e1;border-right:1px solid #cbd5e1;font-size:0.9rem}
+.cover-meta-cell:nth-child(even){border-right:none}
+.cover-meta-cell-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#C8962A;display:block;margin-bottom:3px}
+.cover-meta-cell-value{font-size:0.92rem;color:#0f172a;font-weight:500}
+.section-card{margin-bottom:40px;padding-top:16px;border-top:1px solid #e2e8f0}
+.section-card:first-of-type{border-top:none}
+.report-body{counter-reset:section}
+.section-title{font-size:1.5rem;margin-bottom:14px;counter-increment:section;display:flex;align-items:center}
+.section-title::before{content:'Section 'counter(section)': ';color:#1e3a8a;margin-right:8px;font-family:'Playfair Display',serif}
+.section-content{font-size:0.97rem;color:#1e293b}
+.section-content p{margin-bottom:14px}
+.indicator-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:22px 0}
+.indicator-box{border:1px solid #cbd5e1;background:#f8fafc;padding:18px;text-align:center}
+.indicator-val{font-size:1.7rem;font-weight:700;color:#1e3a8a;font-family:'Playfair Display',serif}
+.indicator-lbl{font-size:0.82rem;color:#475569;margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+.positioning-notice{background:#fffbeb;border-left:4px solid #b45309;padding:12px 16px;font-size:0.8rem;color:#78350f;margin:16px 0 0}
+.floating-actions{position:fixed;bottom:25px;right:25px;z-index:1000;display:flex;flex-direction:column;gap:10px}
+.btn-action{width:48px;height:48px;border-radius:50%;background:#1e3a8a;color:#fff;display:flex;align-items:center;justify-content:center;border:none;box-shadow:0 4px 10px rgba(0,0,0,.15);transition:transform .2s,background-color .2s;cursor:pointer}
+.btn-action:hover{transform:scale(1.06);background:#0f172a}
+[contenteditable='true']:focus{outline:2px dashed #2563eb;outline-offset:2px;border-radius:2px}
+@media print{.navbar,.floating-actions{display:none!important}body{background:#fff!important}.report-container{border:none!important;box-shadow:none!important;padding:0!important;margin:0!important;max-width:100%!important}.section-card{page-break-before:always;break-before:page}.section-card:first-of-type{page-break-before:avoid;break-before:avoid}.figure-card{page-break-inside:avoid;break-inside:avoid}[contenteditable]{outline:none}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-content">
+    <div class="logo-text">National Statistical Analyst Platform</div>
+    <div class="nav-links">
+      <a href="#cover"><i class="fas fa-home me-1"></i>Report</a>
+      <a href="javascript:window.print()"><i class="fas fa-print me-1"></i>Print / Save PDF</a>
+    </div>
+  </div>
+</nav>
+<div class="floating-actions">
+  <button class="btn-action" onclick="window.print()" title="Print or Save PDF"><i class="fas fa-print"></i></button>
+  <button class="btn-action" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top"><i class="fas fa-chevron-up"></i></button>
+</div>
+<div class="report-container" id="cover">
+<div class="report-body">
+<div class="cover-page" style="text-align:center;padding-bottom:16px;margin-bottom:28px;border-bottom:2px solid #1e3a8a">
+<div class="cover-banner">
+<div class="cover-banner-label">Statistical Analytical Report &nbsp;·&nbsp; DataVizAI</div>
+<h1 class="cover-title">DATAVIZAI SURVEY ANALYSIS REPORT</h1>
+<p class="cover-subtitle">Prepared in Official Statistical Publication Format</p>
+</div>
+<div class="cover-meta-grid">
+<div class="cover-meta-cell"><span class="cover-meta-cell-label">Dataset</span><span class="cover-meta-cell-value">hhscsL7.csv</span></div>
+<div class="cover-meta-cell"><span class="cover-meta-cell-label">Reporting Date</span><span class="cover-meta-cell-value">June 18, 2026</span></div>
+<div class="cover-meta-cell"><span class="cover-meta-cell-label">Tables Analysed</span><span class="cover-meta-cell-value">1 tables &nbsp;(0 with charts)</span></div>
+<div class="cover-meta-cell"><span class="cover-meta-cell-label">Approx. Observations</span><span class="cover-meta-cell-value">14 rows &times; 3 columns</span></div>
+<div class="cover-meta-cell"><span class="cover-meta-cell-label">Report Status</span><span class="cover-meta-cell-value">Official-Style Statistical Publication</span></div>
+<div class="cover-meta-cell"><span class="cover-meta-cell-label">Chart Engine</span><span class="cover-meta-cell-value">Plotly.js v2.35.2 (Interactive)</span></div>
+</div>
+<div class="positioning-notice">
+<strong>Positioning Notice:</strong> This document is styled as an official statistical report in standard publication format. It does not claim to be issued, approved, certified, or endorsed by MoSPI, NSO, or any government ministry or public authority. Calculations assume equal selection probabilities across all observations.
+</div>
+</div>
+<div class="section-card">
+<h2 class="section-title">Table of Contents</h2>
+<div class="section-content">
+<table style="width:100%;border-collapse:collapse"><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;1</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Cover Page</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;1</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;2</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Table of Contents</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;2</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;3</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Executive Summary</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;3</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;4</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Introduction</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;4</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;5</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Data Source and Coverage</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;5</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;6</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Concepts, Definitions, and Variable Roles</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;6</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;7</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Methodology</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;7</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;8</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Data Quality Assessment</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;8</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;9</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Dataset Structure and Variable Inventory</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;9</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;10</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Descriptive Statistical Analysis</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;10</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;11</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Analytical Findings</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;11</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;12</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Charts and Figures</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;12</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;13</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Key Findings</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;13</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;14</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Recommendations</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;14</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;15</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Limitations</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;15</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;16</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Reproducibility and Audit Notes</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;16</td></tr><tr><td style="width:10%;font-weight:600;color:#1e3a8a;padding:10px 14px;border-bottom:1px dashed #cbd5e1">&sect;&nbsp;17</td><td style="width:80%;padding:10px 14px;border-bottom:1px dashed #cbd5e1">Annexures</td><td style="width:10%;text-align:right;color:#64748b;padding:10px 14px;border-bottom:1px dashed #cbd5e1">p.&nbsp;17</td></tr></table>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Executive Summary</h2>
+<div class="section-content">
+<div contenteditable="true"><ul>
+<li>The highest expenditure on Ayush post-natal care is 4455.3808, which is incurred at informal health care providers.</li>
+<li>The lowest expenditure on Ayush post-natal care is 1866.783, which is incurred at govt./public hospital (incl. AAMs/HSC/PHC/CHC etc.).</li>
+<li>The total expenditure on post-natal care is 2832.2994, which includes both Ayush and non-Ayush post-natal care.</li>
+<li>The expenditure on post-natal care for both Ayush and non-Ayush is 3754.5593, which is higher than that of Ayush alone.</li>
+<li>The expenditure on Ayush post-natal care at private hospitals is 4028.2281, which is higher than that at govt./public hospitals.</li>
+</ul></div><div class="indicator-grid">
+<div class="indicator-box"><div class="indicator-val">1</div><div class="indicator-lbl">Tables</div></div>
+<div class="indicator-box"><div class="indicator-val">0</div><div class="indicator-lbl">Charts Generated</div></div>
+<div class="indicator-box"><div class="indicator-val">14</div><div class="indicator-lbl">Total Rows</div></div>
+<div class="indicator-box"><div class="indicator-val">3</div><div class="indicator-lbl">Unique Columns</div></div>
+</div>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Introduction</h2>
+<div class="section-content" contenteditable="true">
+<p>This report documents a thorough statistical characterisation of NSS survey data from the dataset <strong>hhscsL7.csv</strong>. The analysis covers cross-tabulation tables built from microdata, examining distributional patterns across dimensions such as state, sector (rural/urban), social group, and other relevant categorical variables.</p>
+<p>The report layout conforms to publication standards for official statistics, structuring content logically from an initial data overview through to detailed findings, visual analysis, and recommendations. All text sections in this report are directly editable — click any paragraph to modify it before printing or saving as PDF.</p>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Data Source and Coverage</h2>
+<div class="section-content">
+<p>The source data was processed through the DataVizAI pipeline. Details of the input data shape, coverage markers, and observation constraints are summarised below:</p>
+<div style="overflow-x:auto;border:1px solid #cbd5e1"><table class="table table-bordered" style="margin-bottom:0;font-size:0.88rem"><thead><tr><th style="background:#1e3a8a;color:#fff;padding:8px 12px">Coverage Property</th><th style="background:#1e3a8a;color:#fff;padding:8px 12px">Observed Value</th><th style="background:#1e3a8a;color:#fff;padding:8px 12px">Description</th></tr></thead><tbody><tr><td>Source Dataset</td><td><code>hhscsL7.csv</code></td><td>Uploaded microdata file</td></tr><tr><td>Tables Analysed</td><td>1</td><td>Cross-tabulation tables in this report</td></tr><tr><td>Approx. Rows Summarised</td><td>14</td><td>Total observation rows across all tables</td></tr><tr><td>Unique Variables</td><td>3</td><td>Distinct columns across all tables</td></tr><tr><td>Charts Produced</td><td>0</td><td>Tables with at least one interactive chart</td></tr><tr><td>Report Generated</td><td>2026-06-18 04:28:02</td><td>Analysis timestamp</td></tr></tbody></table></div>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Concepts, Definitions, and Variable Roles</h2>
+<div class="section-content" contenteditable="true">
+<p>To support proper statistical treatment, data attributes are assigned operational roles based on their mathematical behaviour:</p>
+<ul style="margin:12px 0 16px 20px">
+<li style="margin-bottom:8px"><strong>Numeric Measure:</strong> Continuous or discrete quantitative variables showing magnitudes (e.g. MPCE, count, estimated persons). Subject to means, totals, and proportions.</li>
+<li style="margin-bottom:8px"><strong>Categorical Dimension:</strong> Categorical factors defining attributes or cohort memberships (e.g. State, Sector, Social Group). Subject to unique value breakdowns and cross-tabulations.</li>
+<li style="margin-bottom:8px"><strong>Identifiers / Codes:</strong> Structural keys (block codes, record sequences) excluded from statistical summaries to prevent over-interpretation.</li>
+</ul>
+<p class="text-danger small"><strong>Notice on Missing Metadata:</strong> Official metadata logs, sampling weight files, and response rate forms may be absent from the uploaded package. Calculations may assume equal weight probability where weights are unavailable.</p>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Methodology</h2>
+<div class="section-content" contenteditable="true">
+<p>The statistical pipeline follows a structured processing path:</p>
+<ol style="margin:10px 0 16px 20px">
+<li style="margin-bottom:6px"><strong>Data Ingestion:</strong> Safe reading of source CSV microdata into a pandas DataFrame with encoding detection.</li>
+<li style="margin-bottom:6px"><strong>Layout Mapping:</strong> Excel data-layout file parsed to map raw column codes (e.g. <code>b11c4</code>) to full field names and block numbers.</li>
+<li style="margin-bottom:6px"><strong>Codebook Extraction:</strong> PDF schedule parsed to extract value labels from "CODES FOR BLOCK N" sections.</li>
+<li style="margin-bottom:6px"><strong>Table Construction:</strong> Cross-tabulations built with user-specified dimensions, measures, and estimation method (weighted/unweighted count or proportion).</li>
+<li style="margin-bottom:6px"><strong>Chart Generation:</strong> Rule-based chart type selection validates data types and cardinality before rendering interactive Plotly charts — no AI call required for visualisation.</li>
+<li style="margin-bottom:6px"><strong>AI Text Analysis:</strong> Where API keys are configured, Groq LLaMA or Gemini generates analytical paragraphs, key insights, and recommendations grounded strictly in the table data.</li>
+</ol>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Data Quality Assessment</h2>
+<div class="section-content" contenteditable="true">
+<p>The tables in this report were validated through the following quality checks prior to rendering:</p>
+<ul style="margin:10px 0 16px 20px">
+<li style="margin-bottom:6px"><strong>Numeric Measure Validation:</strong> Chart generation is skipped for any measure column that contains fewer than two distinct non-zero numeric values.</li>
+<li style="margin-bottom:6px"><strong>Category Count Validation:</strong> Dimension columns must have at least two distinct non-empty categories before a chart is produced.</li>
+<li style="margin-bottom:6px"><strong>Row Type Awareness:</strong> Subtotal and grand-total rows are excluded from chart calculations to prevent double-counting.</li>
+</ul>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Dataset Structure and Variable Inventory</h2>
+<div class="section-content">
+<p>The variable inventory lists all columns present across the report tables, classified by their functional role:</p>
+<div style="overflow-x:auto;border:1px solid #cbd5e1"><table style="width:100%;border-collapse:collapse;font-size:0.85rem"><thead><tr><th style="background:#1e3a8a;color:#fff;padding:8px 12px">Variable Name</th><th style="background:#1e3a8a;color:#fff;padding:8px 12px">Functional Type</th></tr></thead><tbody><tr><td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:0.83rem"><strong>Nature of post-natal care</strong></td><td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:0.83rem"><span style="background:#1e3a8a;color:#fff;padding:2px 8px;border-radius:3px;font-size:0.75rem">Dimension</span></td></tr><tr><td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:0.83rem"><strong>Major source of receiving post-natal care</strong></td><td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:0.83rem"><span style="background:#1e3a8a;color:#fff;padding:2px 8px;border-radius:3px;font-size:0.75rem">Dimension</span></td></tr><tr><td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:0.83rem"><strong>Expenditure incurred on post-natal care (Rs.)</strong></td><td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:0.83rem"><span style="background:#0d9488;color:#fff;padding:2px 8px;border-radius:3px;font-size:0.75rem">Measure</span></td></tr></tbody></table></div>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Descriptive Statistical Analysis</h2>
+<div class="section-content">
+<p>The following cross-tabulation tables were generated from the survey microdata. Interactive charts appear directly below each table where data permits visualisation. Click any chart caption to edit the analytical inference.</p>
+<div style="margin-bottom:40px"><h4 contenteditable="true" style="font-size:1rem;font-weight:600;color:#0f172a;margin-bottom:8px">Table 1</h4><p style="font-size:11px;color:#64748b;margin-bottom:6px">Dimensions: Nature of post-natal care → Major source of receiving post-natal care &nbsp;|&nbsp; Weight: <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:11px">Mult</code> &nbsp;|&nbsp; Method: Horvitz-Thompson weighted estimation</p><div style="overflow-x:auto;border:1px solid #cbd5e1"><table style="width:100%;border-collapse:collapse;table-layout:auto"><thead><tr><th style="background:#1e3a8a;color:#fff;padding:8px 10px;font-size:0.82rem;font-weight:600;border:1px solid #cbd5e1;white-space:nowrap">Nature of post-natal care</th><th style="background:#1e3a8a;color:#fff;padding:8px 10px;font-size:0.82rem;font-weight:600;border:1px solid #cbd5e1;white-space:nowrap">Major source of receiving post-natal care</th><th style="background:#1e3a8a;color:#fff;padding:8px 10px;font-size:0.82rem;font-weight:600;border:1px solid #cbd5e1;white-space:nowrap">Expenditure incurred on post-natal care (Rs.)</th></tr></thead><tbody><tr><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">Ayush</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">charitable/trust/NGO run hospital</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">2641.1096</td></tr><tr style="background:#f8fafc"><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">Ayush</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">govt./public hospital (incl. AAMs/HSC/PHC/CHC etc.)</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">1866.783</td></tr><tr><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">Ayush</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">informal health care provider</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">4455.3808</td></tr><tr style="background:#f8fafc"><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">Ayush</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">no care was received</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">2000</td></tr><tr><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">Ayush</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">private doctor/clinic</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">3287.6307</td></tr><tr style="background:#f8fafc"><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">Ayush</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">private hospital</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">4028.2281</td></tr><tr style="font-style:italic;background:#f5f3ff;color:#6d28d9"><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">Ayush</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">(Subtotal)</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">2777.4848</td></tr><tr style="background:#f8fafc"><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">both</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">charitable/trust/NGO run hospital</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">3704.867</td></tr><tr><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">both</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">govt./public hospital (incl. AAMs/HSC/PHC/CHC etc.)</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">2930.3447</td></tr><tr style="background:#f8fafc"><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">both</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">informal health care provider</td><td style="padding:7px 10px;border:1px solid #e2e8f0;font-size:0.83rem;vertical-align:top">4652.1596</td></tr></tbody></table></div><p style="font-size:11px;color:#9ca3af;margin-top:4px">Showing 10 of 14 rows.</p></div>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Analytical Findings</h2>
+<div class="section-content">
+<div contenteditable="true"><p>The data provided in Table 1 shows the expenditure incurred on post-natal care across different sources and nature of care. For Ayush post-natal care, the expenditure varies significantly across different sources, with the highest expenditure being 4455.3808 at informal health care providers and the lowest being 1866.783 at govt./public hospital (incl. AAMs/HSC/PHC/CHC etc.). The subtotal for Ayush post-natal care is 2777.4848.</p>
+<p>The data also shows that the expenditure on post-natal care for both Ayush and non-Ayush is higher than that of Ayush alone, with a subtotal of 3754.5593 for both. The total expenditure on post-natal care is 2832.2994.</p>
+<p>It is also observed that the expenditure on post-natal care at private hospitals is higher than that at govt./public hospitals for both Ayush and both Ayush and non-Ayush post-natal care, with expenditures of 4028.2281 and 5259.8989 respectively.</p></div>
+<div style="margin-top:16px"><h4 style="font-size:1rem;font-weight:600;margin-bottom:10px">Trend Summary</h4><div style="background:#fefce8;border:1px solid #fde68a;border-radius:6px;padding:16px 20px;margin-bottom:16px" contenteditable="true"><div class="insight-box" contenteditable="true"><ul><li>Expenditure for post-natal care is higher when "both" types of care are received, with a subtotal of 3754.56 Rs, compared to receiving "Ayush" care alone, which has a subtotal of 2777.48 Rs.</li><li>Government/public hospitals consistently incur the lowest expenditures for post-natal care, recorded at 1866.78 Rs for 'Ayush' care and 2930.34 Rs for 'both' types of care.</li><li>Private and informal healthcare providers generally lead to the highest expenditures, with 'private hospital' for "both" care having the highest at 5259.90 Rs, and 'informal health care provider' being the costliest for "Ayush" care at 4455.38 Rs.</li></ul></div></div></div>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Charts and Figures</h2>
+<div class="section-content">
+<p style="color:#64748b;font-style:italic">No charts were generated for this report. This may occur when table measures are non-numeric, all values are zero, or dimension columns have fewer than 2 distinct categories.</p>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Key Findings</h2>
+<div class="section-content">
+<div contenteditable="true"><ul>
+<li>The highest expenditure on Ayush post-natal care is 4455.3808, which is incurred at informal health care providers.</li>
+<li>The lowest expenditure on Ayush post-natal care is 1866.783, which is incurred at govt./public hospital (incl. AAMs/HSC/PHC/CHC etc.).</li>
+<li>The total expenditure on post-natal care is 2832.2994, which includes both Ayush and non-Ayush post-natal care.</li>
+<li>The expenditure on post-natal care for both Ayush and non-Ayush is 3754.5593, which is higher than that of Ayush alone.</li>
+<li>The expenditure on Ayush post-natal care at private hospitals is 4028.2281, which is higher than that at govt./public hospitals.</li>
+</ul></div>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Recommendations</h2>
+<div class="section-content">
+<div contenteditable="true" style="outline:none"><ul>
+<li>Further analysis should be conducted to determine the factors contributing to the high expenditure on Ayush post-natal care at informal health care providers, which is 4455.3808.</li>
+<li>Policies should be implemented to reduce the expenditure on post-natal care at private hospitals, which is 4028.2281 for Ayush and 5259.8989 for both Ayush and non-Ayush.</li>
+<li>Efforts should be made to increase the utilization of govt./public hospitals for post-natal care, where the expenditure is lower, at 1866.783 for Ayush and 2930.3447 for both Ayush and non-Ayush.</li>
+<li>Additional research should be conducted to determine the effectiveness of Ayush post-natal care and its impact on the overall health outcomes, given the average expenditure of 2777.4848.</li>
+</ul></div>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Limitations</h2>
+<div class="section-content" contenteditable="true">
+<p>This report operates under several critical analytical constraints:</p>
+<ul style="margin:10px 0 16px 20px">
+<li style="margin-bottom:8px"><strong>Equal Selection Probability:</strong> Due to a lack of stratification weights in some tables, calculations may assume equal representation, which can skew generalisations.</li>
+<li style="margin-bottom:8px"><strong>Preview Row Limit:</strong> Chart generation uses the preview rows loaded into the browser session. Very large tables may render charts from a subset of the full data.</li>
+<li style="margin-bottom:8px"><strong>Observational Limits:</strong> Distribution patterns identify co-movements but do not establish causal relationships between variables.</li>
+<li style="margin-bottom:8px"><strong>PDF Codebook Accuracy:</strong> Value label extraction from PDF schedules depends on text-layer quality; scanned PDFs may yield incomplete codebooks.</li>
+</ul>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Reproducibility and Audit Notes</h2>
+<div class="section-content">
+<table class="table table-bordered" style="font-size:0.88rem"><thead><tr><th style="background:#1e3a8a;color:#fff;padding:8px 12px">Parameter</th><th style="background:#1e3a8a;color:#fff;padding:8px 12px">Audit Record</th></tr></thead><tbody><tr><td>Analysis Date</td><td>2026-06-18 04:28:02</td></tr><tr><td>Source Dataset</td><td><code>hhscsL7.csv</code></td></tr><tr><td>Tables in Report</td><td>1</td></tr><tr><td>Chart Engine</td><td>Plotly.js v2.35.2 (rule-based, no AI)</td></tr><tr><td>Text Analysis Engine</td><td>Groq LLaMA / Gemini (when API key configured)</td></tr><tr><td>Transparency Statement</td><td>All table and chart data derive directly from uploaded survey files. No external data sources were used.</td></tr></tbody></table>
+</div></div>
+<div class="section-card">
+<h2 class="section-title">Annexures</h2>
+<div class="section-content">
+<h4 style="font-size:1rem;font-weight:600;margin-bottom:10px">Query Response</h4><div style="background:#fdf4ff;border:1px solid #e9d5ff;border-radius:6px;padding:16px 20px;margin-bottom:20px"><div style="font-weight:600;color:#6d28d9;margin-bottom:6px">Q: What is the average expenditure on Ayush post natal care</div><div contenteditable="true"><p>The average expenditure on Ayush post-natal care is 2777.4848, as shown in the subtotal for Ayush post-natal care in Table 1.</p></div></div><h4 style="font-size:1rem;font-weight:600;margin-bottom:10px">Estimation Formulae</h4>
+<div style="border:1px solid #cbd5e1;padding:16px;margin-bottom:14px;background:#f8fafc">
+<div style="font-weight:600;font-size:0.95rem;color:#1e3a8a">Weighted Mean</div>
+<div style="font-family:Courier New,monospace;background:#fff;padding:8px 12px;text-align:center;border:1px solid #e2e8f0;margin:8px 0;font-size:0.95rem">&#x1D465;&#772; = &Sigma;(w&#x1D45C; &times; x&#x1D45C;) / &Sigma;w&#x1D45C;</div>
+<div style="font-size:0.83rem;color:#475569">Weighted arithmetic mean across sampled observations with survey weights w&#x1D45C;.</div>
+</div>
+<div style="border:1px solid #cbd5e1;padding:16px;margin-bottom:14px;background:#f8fafc">
+<div style="font-weight:600;font-size:0.95rem;color:#1e3a8a">Estimated Population Total</div>
+<div style="font-family:Courier New,monospace;background:#fff;padding:8px 12px;text-align:center;border:1px solid #e2e8f0;margin:8px 0;font-size:0.95rem">T&#x0302; = M &times; m&#x207B;&#xB9; &times; &Sigma;(w&#x1D45C; &times; y&#x1D45C;)</div>
+<div style="font-size:0.83rem;color:#475569">Multiplier-expanded estimated total for domain of interest.</div>
+</div>
+</div></div>
+</div>
+</div>
+<div style="max-width:1000px;margin:0 auto;padding:16px 44px 32px;font-size:11px;color:#9ca3af;text-align:center;border-top:1px solid #e5e7eb;margin-top:0">
+Generated by DataVizAI &nbsp;·&nbsp; Survey Intelligence Platform · 18 June 2026 &nbsp;·&nbsp; <em>Click any section heading or paragraph to edit before printing</em>
+</div>
+</body>
+</html>
