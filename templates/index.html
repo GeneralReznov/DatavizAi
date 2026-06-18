@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataVizAI — Survey Intelligence Platform</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Consistent global navbar ─────────────────────────────────────── */
+    .global-nav {
+      background: #0d1b2e;
+      border-bottom: 3px solid #1e3a5f;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      gap: 16px;
+    }
+    .global-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .global-nav-logo {
+      width: 36px;
+      height: 36px;
+      background: #1e3a8a;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .global-nav-name {
+      display: block;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .global-nav-sub {
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: #5a7290;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .global-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .global-nav-links a {
+      color: #8fa3bb;
+      font-size: 0.83rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .global-nav-links a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+    .global-nav-links a.active { color: #e8a020; }
+    .global-nav-end {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .nav-user-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.07);
+      color: #c8d4e0;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .nav-role-tag {
+      background: #1e3a8a;
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .nav-role-tag.admin { background: #c8962a; }
+    .nav-btn {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.15s, opacity 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+    .nav-btn-admin {
+      color: #93c5fd;
+      border: 1.5px solid #1e3a8a;
+      background: transparent;
+    }
+    .nav-btn-admin:hover { background: #1e3a8a; color: #fff; }
+    .nav-btn-reset {
+      color: #94a3b8;
+      border: 1.5px solid #2d4a6a;
+      background: transparent;
+    }
+    .nav-btn-reset:hover { background: #2d4a6a; color: #fff; }
+    .nav-btn-logout {
+      color: #fca5a5;
+      border: 1.5px solid #7f1d1d;
+      background: transparent;
+    }
+    .nav-btn-logout:hover { background: #7f1d1d; color: #fff; }
+  </style>
+</head>
+<body>
+  <!-- ── Consistent Global Navbar ── -->
+  <nav class="global-nav">
+    <a class="global-nav-brand" href="/home">
+      <div class="global-nav-logo">DVZ</div>
+      <div>
+        <span class="global-nav-name">DataVizAI</span>
+        <span class="global-nav-sub">Survey Intelligence Platform</span>
+      </div>
+    </a>
+
+    <ul class="global-nav-links">
+      <li><a href="/home">Home</a></li>
+      <li><a href="/" class="active">App</a></li>
+      <li><a href="/home#features">Features</a></li>
+    </ul>
+
+    <div class="global-nav-end">
+      <button class="nav-btn nav-btn-reset" id="reset-btn" title="Reset all uploads and outputs">↺ Reset</button>
+      {% if current_user.is_authenticated %}
+        {% if current_user.role == 'admin' %}
+          <a href="/admin/dashboard" class="nav-btn nav-btn-admin">⚙ Admin</a>
+        {% endif %}
+        <div class="nav-user-chip">
+          👤 {{ current_user.name }}
+          <span class="nav-role-tag {% if current_user.role == 'admin' %}admin{% endif %}">{{ current_user.role }}</span>
+        </div>
+        <a href="/auth/logout" class="nav-btn nav-btn-logout">⎋ Logout</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ── Step 1: Upload ── -->
+    <section class="upload-section">
+      <div class="step-label">Step 1</div>
+      <h2 class="section-title">Upload Source Files</h2>
+      <p class="section-desc">Upload all three files. CSV and Excel are required; PDF enables value-label decoding and block metadata.</p>
+      <div class="upload-grid">
+
+        <div class="upload-card" id="card-csv">
+          <div class="upload-card-icon csv-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="upload-card-body">
+            <div class="upload-card-title">Survey Dataset <span class="badge">CSV</span></div>
+            <div class="upload-card-desc">Main survey microdata file (e.g., hhscsL7)</div>
+            <div class="upload-status" id="status-csv">Not uploaded</div>
+          </div>
+          <label class="upload-btn" for="input-csv">Choose File</label>
+          <input type="file" id="input-csv" accept=".csv" hidden />
+        </div>
+
+        <div class="upload-card" id="card-excel">
+          <div class="upload-card-icon excel-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="upload-card-body">
+            <div class="upload-card-title">Data Layout <span class="badge">XLSX</span></div>
+            <div class="upload-card-desc">Master metadata: maps columns → field names, blocks, positions</div>
+            <div class="upload-status" id="status-excel">Not uploaded</div>
+          </div>
+          <label class="upload-btn" for="input-excel">Choose File</label>
+          <input type="file" id="input-excel" accept=".xlsx,.xls" hidden />
+        </div>
+
+        <div class="upload-card" id="card-pdf">
+          <div class="upload-card-icon pdf-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13h1.5a1.5 1.5 0 0 1 0 3H9v-3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="13" x2="13" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="13" x2="16" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="14.5" x2="17" y2="14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="upload-card-body">
+            <div class="upload-card-title">Schedule <span class="badge badge-orange">PDF</span> <span class="badge badge-optional">Recommended</span></div>
+            <div class="upload-card-desc">Questionnaire + codebook — enables value-label decoding</div>
+            <div class="upload-status" id="status-pdf">Not uploaded</div>
+          </div>
+          <label class="upload-btn" for="input-pdf">Choose File</label>
+          <input type="file" id="input-pdf" accept=".pdf" hidden />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Step 2: Metadata Repository ── -->
+    <section class="process-section">
+      <div class="step-label">Step 2</div>
+      <h2 class="section-title">Preview Metadata Repository</h2>
+      <p class="section-desc">Inspect the mapping of every CSV column to its field name, block, and value labels before running the full pipeline.</p>
+      <button class="process-btn" id="process-btn" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Preview Metadata Table
+      </button>
+      <div id="process-error" class="error-msg" style="display:none;"></div>
+    </section>
+
+    <!-- Stats (shown after preview) -->
+    <section class="stats-section" id="stats-section" style="display:none;">
+      <h2 class="section-title">Metadata Summary</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-label">Total Columns</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-mapped">—</div>
+          <div class="stat-label">Columns Mapped</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-blocks">—</div>
+          <div class="stat-label">Blocks Identified</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-codes">—</div>
+          <div class="stat-label">Columns with Codes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-levels">—</div>
+          <div class="stat-label">Survey Level(s)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metadata table (shown after preview) -->
+    <section class="results-section" id="results-section" style="display:none;">
+      <div class="results-header">
+        <h2 class="section-title" style="margin:0;">Metadata Repository</h2>
+        <div class="results-controls">
+          <input type="text" id="search-input" class="search-input" placeholder="Search column, field name, question…" />
+          <select id="filter-block" class="filter-select">
+            <option value="">All Blocks</option>
+          </select>
+          <select id="filter-codes" class="filter-select">
+            <option value="">All Columns</option>
+            <option value="1">With Value Labels Only</option>
+          </select>
+          <button class="export-btn" id="export-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Export Metadata CSV
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="meta-table" id="meta-table">
+          <thead>
+            <tr>
+              <th>Column Name</th>
+              <th>Full Field Name</th>
+              <th>Block</th>
+              <th>Item / Col</th>
+              <th>Level</th>
+              <th>Question / Description</th>
+              <th>Value Labels</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+        <div id="no-results" class="no-results" style="display:none;">No matching columns found.</div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+    <!-- ── Step 3: Generate Full Pipeline ── -->
+    <section class="generate-section" id="generate-section">
+      <div class="step-label step-label-green">Step 3</div>
+      <h2 class="section-title">Generate Consolidated Dataset</h2>
+      <p class="section-desc">
+        Runs the full DataVizAI pipeline: resolves all column names, decodes survey codes into readable labels,
+        identifies linking keys (HH_ID, MEMBER_ID), and produces six analysis-ready output files.
+      </p>
+
+      <div class="pipeline-phases">
+        <div class="phase-chip">📥 Ingest CSV</div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-chip">🗂 Parse Layout</div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-chip">📄 Parse PDF</div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-chip">🔗 Merge Metadata</div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-chip">🏷 Resolve Names</div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-chip">🔢 Decode Values</div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-chip">📊 Consolidate</div>
+      </div>
+
+      <button class="generate-btn" id="generate-btn" disabled>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Run Full Pipeline &amp; Generate Outputs
+      </button>
+      <div id="generate-error" class="error-msg" style="display:none;"></div>
+    </section>
+
+    <!-- ── Output files (shown after generate) ── -->
+    <section class="outputs-section" id="outputs-section" style="display:none;">
+      <h2 class="section-title">Pipeline Outputs</h2>
+      <p class="section-desc">All six files are ready. Click any card to download.</p>
+
+      <!-- Generate summary stats -->
+      <div class="gen-stats-grid" id="gen-stats-grid"></div>
+
+      <div class="output-grid" id="output-grid">
+
+        <a class="output-card" id="out-csv" href="/download/consolidated_resolved_dataset.csv" download>
+          <div class="output-card-icon icon-green">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="output-card-body">
+            <div class="output-card-title">Consolidated Dataset</div>
+            <div class="output-card-file">consolidated_resolved_dataset.csv</div>
+            <div class="output-card-desc">Human-readable survey data — resolved column names, decoded values</div>
+          </div>
+          <div class="download-icon">↓</div>
+        </a>
+
+        <a class="output-card" id="out-parquet" href="/download/consolidated_resolved_dataset.parquet" download>
+          <div class="output-card-icon icon-purple">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <div class="output-card-body">
+            <div class="output-card-title">Analytics Dataset</div>
+            <div class="output-card-file">consolidated_resolved_dataset.parquet</div>
+            <div class="output-card-desc">Columnar format optimised for Python / R / BI tools</div>
+          </div>
+          <div class="download-icon">↓</div>
+        </a>
+
+        <a class="output-card" id="out-dict" href="/download/survey_data_dictionary.xlsx" download>
+          <div class="output-card-icon icon-teal">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="output-card-body">
+            <div class="output-card-title">Survey Data Dictionary</div>
+            <div class="output-card-file">survey_data_dictionary.xlsx</div>
+            <div class="output-card-desc">Every field: column name, block, question, data type, allowed values</div>
+          </div>
+          <div class="download-icon">↓</div>
+        </a>
+
+        <a class="output-card" id="out-meta" href="/download/metadata_repository.json" download>
+          <div class="output-card-icon icon-blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <div class="output-card-body">
+            <div class="output-card-title">Metadata Repository</div>
+            <div class="output-card-file">metadata_repository.json</div>
+            <div class="output-card-desc">Column mappings, block mappings, question text, codebooks</div>
+          </div>
+          <div class="download-icon">↓</div>
+        </a>
+
+        <a class="output-card" id="out-colmap" href="/download/column_mapping.json" download>
+          <div class="output-card-icon icon-orange">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><polyline points="17 1 21 5 17 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 11V9a4 4 0 0 1 4-4h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 23 3 19 7 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 13v2a4 4 0 0 1-4 4H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="output-card-body">
+            <div class="output-card-title">Column Mapping</div>
+            <div class="output-card-file">column_mapping.json</div>
+            <div class="output-card-desc">Original variable names → resolved human-readable names (lineage)</div>
+          </div>
+          <div class="download-icon">↓</div>
+        </a>
+
+        <a class="output-card" id="out-codebook" href="/download/resolved_codebook.json" download>
+          <div class="output-card-icon icon-red">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="output-card-body">
+            <div class="output-card-title">Resolved Codebook</div>
+            <div class="output-card-file">resolved_codebook.json</div>
+            <div class="output-card-desc">All survey code definitions: variable names, categories, labels</div>
+          </div>
+          <div class="download-icon">↓</div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ── Step 4: Data Preprocessing ── -->
+    <section class="preproc-section" id="preproc-section">
+      <div class="step-label step-label-teal">Step 4</div>
+      <h2 class="section-title">Data Preprocessing</h2>
+      <p class="section-desc">
+        First detect missing values and outliers, review and optionally skip or manually correct individual rows,
+        then apply imputation and outlier handling. Requires Step 3 to be completed first.
+      </p>
+
+      <!-- Phase A: Detection settings + Detect button -->
+      <div class="preproc-phase-card" id="preproc-phase-detect">
+        <div class="preproc-phase-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Phase 1 — Detect Issues
+        </div>
+
+        <div class="preproc-option-group" style="margin-top:12px">
+          <div class="preproc-option-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Outlier Detection Method (used for detection preview)
+          </div>
+          <div class="preproc-radio-group">
+            <label class="preproc-radio"><input type="radio" name="preproc-outlier" value="iqr" checked /> IQR (1.5× fence) <span class="preproc-rec">recommended</span></label>
+            <label class="preproc-radio"><input type="radio" name="preproc-outlier" value="z_score" /> Z-Score (|z| &gt; 3)</label>
+            <label class="preproc-radio"><input type="radio" name="preproc-outlier" value="modified_z_score" /> Modified Z-Score / MAD (|mz| &gt; 3.5)</label>
+            <label class="preproc-radio"><input type="radio" name="preproc-outlier" value="percentile" /> Percentile (below 1% or above 99%)</label>
+            <label class="preproc-radio"><input type="radio" name="preproc-outlier" value="none" /> Skip outlier detection</label>
+          </div>
+          <div class="preproc-method-note" id="preproc-outlier-note">Applies only to continuous numeric columns (more than 25 unique values).</div>
+        </div>
+
+        <button class="preproc-detect-btn" id="preproc-detect-btn" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Detect Missing Values &amp; Outliers
+        </button>
+        <div id="preproc-detect-error" class="error-msg" style="display:none;"></div>
+      </div>
+
+      <!-- Detection review panel (shown after detect) -->
+      <div id="preproc-review-panel" style="display:none;">
+        <div class="preproc-review-summary" id="preproc-review-summary"></div>
+        <div id="preproc-review-vars"></div>
+      </div>
+
+      <!-- Phase B: Preprocessing methods + Run button (shown after detect) -->
+      <div class="preproc-phase-card" id="preproc-phase-run" style="display:none;">
+        <div class="preproc-phase-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Phase 2 — Choose Methods &amp; Apply
+        </div>
+
+        <div class="preproc-options" style="margin-top:12px">
+
+          <div class="preproc-option-group">
+            <div class="preproc-option-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Missing Value Imputation
+            </div>
+            <div class="preproc-radio-group">
+              <label class="preproc-radio"><input type="radio" name="preproc-missing" value="median" checked /> Median <span class="preproc-rec">recommended</span></label>
+              <label class="preproc-radio"><input type="radio" name="preproc-missing" value="mean" /> Mean</label>
+              <label class="preproc-radio"><input type="radio" name="preproc-missing" value="mode" /> Mode</label>
+              <label class="preproc-radio"><input type="radio" name="preproc-missing" value="knn" /> KNN (k=5)</label>
+              <label class="preproc-radio"><input type="radio" name="preproc-missing" value="none" /> Skip</label>
+            </div>
+            <div class="preproc-method-note" id="preproc-missing-note">Replaces missing values in numeric columns with the column median.</div>
+          </div>
+
+          <div class="preproc-option-group" id="preproc-action-group">
+            <div class="preproc-option-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Outlier Handling Action
+            </div>
+            <div class="preproc-radio-group">
+              <label class="preproc-radio"><input type="radio" name="preproc-action" value="cap" checked /> Cap / Winsorize <span class="preproc-rec">recommended — preserves all rows</span></label>
+              <label class="preproc-radio"><input type="radio" name="preproc-action" value="remove" /> Remove Rows</label>
+              <label class="preproc-radio"><input type="radio" name="preproc-action" value="flag" /> Flag Only (detect but do not modify)</label>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="preproc-run-btn" id="preproc-run-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Apply Preprocessing
+        </button>
+        <div id="preproc-error" class="error-msg" style="display:none;"></div>
+        <div id="preproc-results" style="display:none;"></div>
+      </div>
+
+    </section>
+
+    <!-- ── Step 5: Survey Table Definition Engine ── -->
+    <section class="tb-section" id="tb-section">
+      <div class="step-label step-label-purple">Step 5</div>
+      <h2 class="section-title">Survey Table Definition Engine</h2>
+      <p class="section-desc">
+        Classify variables by role (Dimension / Measure), run weight diagnostics, define multi-level table structures
+        with multiple measures, and generate report-ready publication tables. Table definitions are
+        exported as a reusable JSON schema — no re-configuration needed for batch regeneration.
+        Requires Step 3 to be completed first.
+      </p>
+
+      <!-- Phase 1: Variable Classification & Selection -->
+      <div class="tb-phase-header">
+        <span class="tb-phase-label">Phase 1 — Variable Classification &amp; Selection</span>
+        <button class="tb-load-btn" id="tb-load-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Load Variables from Dataset
+        </button>
+      </div>
+      <div id="tb-load-error" class="error-msg" style="display:none;"></div>
+
+      <div id="tb-var-panel" style="display:none;">
+        <!-- Controls row -->
+        <div class="tb-var-header">
+          <div class="tb-var-controls">
+            <input type="text" id="tb-var-search" class="search-input" placeholder="Search variables…" style="width:200px;" />
+            <select id="tb-var-cat-filter" class="filter-select">
+              <option value="">All Types</option>
+              <option value="Continuous">Continuous</option>
+              <option value="Categorical (Numeric)">Categorical (Numeric)</option>
+              <option value="Categorical (Text)">Categorical (Text)</option>
+            </select>
+            <select id="tb-role-filter" class="filter-select">
+              <option value="">All Roles</option>
+              <option value="dimension">Dimension</option>
+              <option value="measure">Measure</option>
+              <option value="weight">Weight</option>
+              <option value="unassigned">Unassigned</option>
+            </select>
+            <button class="tb-sel-btn" id="tb-sel-all">Select All</button>
+            <button class="tb-sel-btn" id="tb-desel-all">Deselect All</button>
+          </div>
+          <div class="tb-var-counts">
+            <span id="tb-sel-count">0</span> of <span id="tb-total-count">0</span> selected
+          </div>
+        </div>
+
+        <!-- Weight column override -->
+        <div class="tb-weight-row">
+          <span class="tb-weight-row-label">Weight Variable:</span>
+          <span class="tb-weight-badge" id="tb-weight-display">—</span>
+          <select id="tb-weight-override" class="filter-select" style="font-size:12px;padding:4px 8px;">
+            <option value="">— Override weight column —</option>
+          </select>
+        </div>
+
+        <!-- Role legend -->
+        <div class="tb-role-legend">
+          <span class="tb-role-badge role-dimension">Dimension</span> row grouping variable &nbsp;·&nbsp;
+          <span class="tb-role-badge role-measure">Measure</span> estimated quantity &nbsp;·&nbsp;
+          <span class="tb-role-badge role-weight">Weight</span> design weight &nbsp;·&nbsp;
+          <span class="tb-role-badge role-unassigned">Unassigned</span>
+        </div>
+
+        <div class="tb-var-grid" id="tb-var-grid"></div>
+
+        <!-- Preprocessing controls -->
+        <div class="tb-preproc-controls">
+          <div class="tb-datasrc-row">
+            <span class="tb-weight-row-label">Data Source for Estimation:</span>
+            <label class="tb-radio-label">
+              <input type="radio" name="tb-data-src" value="processed" checked /> Preprocessed data
+              <span class="tb-optional">(recommended — imputed, cleaned, outliers capped)</span>
+            </label>
+            <label class="tb-radio-label">
+              <input type="radio" name="tb-data-src" value="original" /> Original data
+            </label>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+            <button class="tb-action-btn" id="tb-preprocess-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Apply Preprocessing on Selected Variables
+            </button>
+            <button class="tb-diag-btn" id="tb-diag-btn" style="display:none;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Run Weight Diagnostics
+            </button>
+          </div>
+        </div>
+
+        <div id="tb-preprocess-error" class="error-msg" style="display:none;"></div>
+        <div id="tb-preprocess-stats" class="tb-preprocess-stats" style="display:none;"></div>
+
+        <!-- Weight Diagnostics panel -->
+        <div id="tb-diag-panel" style="display:none; margin-top:14px;"></div>
+      </div>
+
+      <!-- Phase 2: Table Definitions -->
+      <div id="tb-config-panel" style="display:none; margin-top:28px;">
+        <div class="tb-phase-header">
+          <span class="tb-phase-label">Phase 2 — Table Definitions</span>
+          <button class="tb-add-table-btn" id="tb-add-table-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Add Table Definition
+          </button>
+        </div>
+
+        <!-- Global weight config -->
+        <div class="tb-global-weight-row">
+          <div class="tb-field-row" style="gap:10px;flex-wrap:wrap;">
+            <label class="tb-field-label" style="min-width:160px;">Weight Variable <span class="tb-required">*</span></label>
+            <select id="tb-gen-weight-col" class="tb-name-input" style="max-width:220px;"></select>
+            <label class="tb-field-label" style="min-width:120px;">Label</label>
+            <input type="text" id="tb-gen-weight-label" class="tb-name-input" placeholder="e.g. Design Weight / Household Multiplier" style="max-width:300px;" />
+          </div>
+        </div>
+
+        <div id="tb-tables-container"></div>
+
+        <div style="margin-top:20px;" id="tb-generate-wrap" style="display:none;">
+          <button class="tb-generate-btn" id="tb-generate-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Generate All Tables
+          </button>
+          <div id="tb-generate-error" class="error-msg" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- Phase 3: Results -->
+      <div id="tb-results-panel" style="display:none; margin-top:28px;">
+        <div class="tb-phase-header">
+          <span class="tb-phase-label">Phase 3 — Report-Ready Tables</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a class="tb-dl-json-btn" href="/download/table_definition.json" download>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Table Definition JSON
+            </a>
+            <a class="tb-dl-json-btn" href="/download/survey_tables.json" download>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Survey Tables JSON
+            </a>
+          </div>
+        </div>
+        <div id="tb-results-container"></div>
+      </div>
+
+    </section>
+
+    <!-- ── Step 6: Report Generator ── -->
+    <section class="report-section" id="report-section">
+      <div class="step-label step-label-teal">Step 6</div>
+      <h2 class="section-title">AI Report Generator</h2>
+      <p class="section-desc">
+        Add tables from Step 5 to the report basket. Gemini recommends the best charts for each table;
+        Groq (llama3-70b) writes the analysis, insights and recommendations — all grounded strictly in
+        the table data. The report is fully editable in-browser and downloadable as HTML.
+      </p>
+
+      <!-- Report basket -->
+      <div id="report-basket-empty" class="report-basket-empty">
+        No tables added to report yet. Generate tables in Step 5 and click
+        <strong>Add to Report</strong> on any table.
+      </div>
+
+      <div id="report-basket" style="display:none;">
+        <div class="report-basket-header">
+          <span class="tb-phase-label">Tables in Report</span>
+          <span id="report-basket-count" class="report-basket-badge">0</span>
+        </div>
+        <div id="report-basket-list" class="report-basket-list"></div>
+
+        <!-- Query input -->
+        <div class="report-query-block">
+          <label class="report-query-label">
+            Ask a question about the data
+            <span class="tb-optional">(optional — will be answered using the table data only)</span>
+          </label>
+          <textarea id="report-query" class="report-query-input"
+            placeholder="e.g. Which source of ante-natal care has the highest average expenditure? What percentage of households received no ante-natal care?"
+            rows="3"></textarea>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;align-items:center;">
+          <button class="report-generate-btn" id="report-generate-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Generate AI Report
+          </button>
+          <button class="report-clear-btn" id="report-clear-btn">Clear Basket</button>
+        </div>
+        <div id="report-generate-error" class="error-msg" style="display:none;margin-top:10px;"></div>
+      </div>
+
+      <!-- Report preview panel -->
+      <div id="report-preview-panel" style="display:none; margin-top:28px;">
+        <div class="tb-phase-header">
+          <span class="tb-phase-label">Generated Report — click any section to edit</span>
+          <div style="display:flex;gap:8px;">
+            <button class="report-redownload-btn" id="report-redownload-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Download HTML
+            </button>
+          </div>
+        </div>
+        <div id="report-iframe-wrap" class="report-iframe-wrap">
+          <iframe id="report-iframe" class="report-iframe" title="Generated Report"></iframe>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <div class="loading-overlay" id="loading-overlay" style="display:none;">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loading-text">Processing…</div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In — DataVizAI</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #0f172a;
+        --blue: #1e3a8a;
+        --gold: #c8962a;
+        --muted: #64748b;
+      }
+      body {
+        background: #f1f5f9;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .top-bar {
+        background: var(--navy);
+        border-bottom: 3px solid var(--blue);
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .top-bar .brand-icon {
+        background: var(--blue);
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .top-bar .brand-name {
+        color: #fff;
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+      .top-bar .brand-sub {
+        color: #94a3b8;
+        font-size: 0.8rem;
+        margin-left: auto;
+      }
+      .auth-wrap {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 16px;
+      }
+      .auth-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 460px;
+        overflow: hidden;
+      }
+      .auth-header {
+        background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+        padding: 28px 32px 20px;
+        color: #fff;
+      }
+      .auth-header .eyebrow {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 6px;
+      }
+      .auth-header h1 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0 0 4px;
+      }
+      .auth-header p {
+        font-size: 0.88rem;
+        color: #cbd5e1;
+        margin: 0;
+      }
+      .auth-body {
+        padding: 28px 32px;
+      }
+      .nav-tabs {
+        border-bottom: 2px solid #e2e8f0;
+        margin-bottom: 20px;
+      }
+      .nav-tabs .nav-link {
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 0.9rem;
+        border: none;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        padding: 8px 16px;
+      }
+      .nav-tabs .nav-link.active {
+        color: var(--blue);
+        border-bottom-color: var(--blue);
+        background: none;
+      }
+      .btn-primary {
+        background: var(--blue);
+        border-color: var(--blue);
+        font-weight: 600;
+      }
+      .btn-primary:hover {
+        background: var(--navy);
+        border-color: var(--navy);
+      }
+      .form-label {
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: #374151;
+      }
+      .otp-timer-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 12px;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .otp-digits {
+        font-size: 1.1rem;
+        letter-spacing: 3px;
+        font-family: monospace;
+        text-align: center;
+      }
+      .footer-note {
+        text-align: center;
+        font-size: 0.78rem;
+        color: var(--muted);
+        padding: 16px 32px;
+        border-top: 1px solid #f1f5f9;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── Consistent Global Navbar ── -->
+    <nav style="background:#0d1b2e;border-bottom:3px solid #1e3a5f;padding:0 2rem;
+                display:flex;align-items:center;justify-content:space-between;
+                height:56px;position:sticky;top:0;z-index:1000;gap:16px;">
+      <a href="/home" style="display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;">
+        <div style="width:36px;height:36px;background:#1e3a8a;border-radius:6px;
+                    display:flex;align-items:center;justify-content:center;
+                    font-weight:800;font-size:0.7rem;letter-spacing:0.05em;color:#fff;flex-shrink:0;">DVZ</div>
+        <div>
+          <span style="display:block;font-weight:700;font-size:0.95rem;color:#fff;line-height:1.2;
+                       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">DataVizAI</span>
+          <span style="display:block;font-size:0.6rem;font-weight:500;color:#5a7290;
+                       letter-spacing:0.1em;text-transform:uppercase;">Survey Intelligence Platform</span>
+        </div>
+      </a>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="/home" style="color:#8fa3bb;font-size:0.83rem;font-weight:500;text-decoration:none;
+                               padding:5px 12px;border-radius:4px;">← Back to Home</a>
+      </div>
+    </nav>
+
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="eyebrow">Secure Access</div>
+          <h1>
+            <i class="fas fa-shield-alt me-2" style="font-size: 1.1rem"></i>DataVizAI
+          </h1>
+          <p>Sign in to access the survey intelligence platform</p>
+        </div>
+
+        <div class="auth-body">
+          <ul class="nav nav-tabs" id="authTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="tab-login"
+                data-bs-toggle="tab"
+                data-bs-target="#pane-login"
+                type="button"
+              >
+                <i class="fas fa-sign-in-alt me-1"></i> Login
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="tab-signup"
+                data-bs-toggle="tab"
+                data-bs-target="#pane-signup"
+                type="button"
+              >
+                <i class="fas fa-user-plus me-1"></i> Register
+              </button>
+            </li>
+            <li class="nav-item d-none" id="li-otp" role="presentation">
+              <button
+                class="nav-link"
+                id="tab-otp"
+                data-bs-toggle="tab"
+                data-bs-target="#pane-otp"
+                type="button"
+              >
+                <i class="fas fa-key me-1"></i> Verify OTP
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="authTabContent">
+            <!-- ── Login tab ── -->
+            <div
+              class="tab-pane fade show active"
+              id="pane-login"
+              role="tabpanel"
+            >
+              <form id="form-login" novalidate>
+                <div class="mb-3">
+                  <label class="form-label" for="login-email"
+                    >Email address</label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="login-email"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="login-password"
+                    >Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="login-password"
+                    autocomplete="current-password"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="fas fa-sign-in-alt me-1"></i> Sign In
+                </button>
+                <div
+                  class="alert alert-danger mt-3 d-none py-2"
+                  id="login-error"
+                ></div>
+              </form>
+            </div>
+
+            <!-- ── Signup tab ── -->
+            <div class="tab-pane fade" id="pane-signup" role="tabpanel">
+              <form id="form-signup" novalidate>
+                <div class="mb-3">
+                  <label class="form-label" for="signup-name">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="signup-name"
+                    autocomplete="name"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="signup-email"
+                    >Email address</label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="signup-email"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="signup-phone">
+                    Phone <span class="text-muted fw-normal">(optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="signup-phone"
+                    autocomplete="tel"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="signup-password"
+                    >Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="signup-password"
+                    autocomplete="new-password"
+                    minlength="6"
+                    required
+                  />
+                  <div class="form-text">Minimum 6 characters</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="signup-confirm"
+                    >Confirm Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="signup-confirm"
+                    autocomplete="new-password"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="fas fa-user-plus me-1"></i> Create Account
+                </button>
+                <div
+                  class="alert alert-danger mt-3 d-none py-2"
+                  id="signup-error"
+                ></div>
+              </form>
+            </div>
+
+            <!-- ── OTP tab ── -->
+            <div class="tab-pane fade" id="pane-otp" role="tabpanel">
+              <form id="form-otp" novalidate>
+                <input type="hidden" id="otp-user-id" />
+                <div
+                  class="alert alert-info py-2 mb-3"
+                  style="font-size: 0.88rem"
+                >
+                  <i class="fas fa-envelope me-1"></i>
+                  An OTP has been sent to your email. Enter it below to verify
+                  your account.
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="otp-code">6-Digit OTP</label>
+                  <input
+                    type="text"
+                    class="form-control otp-digits"
+                    id="otp-code"
+                    maxlength="6"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="fas fa-check-circle me-1"></i> Verify OTP
+                </button>
+                <div class="otp-timer-row">
+                  <span
+                    ><i class="fas fa-clock me-1"></i>Expires in
+                    <strong id="otp-timer">10:00</strong></span
+                  >
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary ms-auto"
+                    id="btn-resend"
+                    disabled
+                  >
+                    Resend OTP
+                  </button>
+                </div>
+                <div
+                  class="alert alert-danger mt-3 d-none py-2"
+                  id="otp-error"
+                ></div>
+              </form>
+            </div>
+          </div>
+          <!-- /tab-content -->
+        </div>
+        <!-- /auth-body -->
+
+        <div class="footer-note">
+          <i class="fas fa-lock me-1"></i>
+          Secured access — DataVizAI Survey Intelligence Platform
+        </div>
+      </div>
+      <!-- /auth-card -->
+    </div>
+    <!-- /auth-wrap -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/auth.js"></script>
+  </body>
+</html>

@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DataVizAI — Survey Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: "Inter", sans-serif; color: #1a1f36; background: #fff; }
+
+      /* ── Announcement Bar ── */
+      .announcement-bar {
+        background: #0d1b2e; color: #c8d0dc;
+        font-size: 0.78rem; padding: 8px 0; letter-spacing: 0.02em;
+      }
+      .announcement-bar .inner {
+        display: flex; align-items: center; gap: 10px; padding: 0 2rem;
+      }
+      .accent-bar { width: 3px; height: 14px; background: #e8a020; border-radius: 2px; flex-shrink: 0; }
+      .announcement-bar span { opacity: 0.85; }
+      .dots { color: #e8a020; margin: 0 5px; }
+
+      /* ── Navbar ── */
+      .site-nav {
+        background: #fff; border-bottom: 1px solid #e8ecf0;
+        padding: 14px 0; position: sticky; top: 0; z-index: 1000;
+      }
+      .site-nav .inner {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 2rem;
+      }
+      .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+      .nav-logo-box {
+        width: 40px; height: 40px; background: #0d1b2e; color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 800; font-size: 0.8rem; letter-spacing: 0.04em; border-radius: 4px;
+      }
+      .brand-name { display: block; font-weight: 700; font-size: 1rem; color: #0d1b2e; }
+      .brand-sub  { display: block; font-size: 0.65rem; font-weight: 500; color: #7a8299; letter-spacing: 0.12em; text-transform: uppercase; }
+      .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+      .nav-links a {
+        text-decoration: none; color: #4a5568; font-size: 0.88rem;
+        font-weight: 500; padding: 6px 14px; border-radius: 4px; transition: color 0.15s;
+      }
+      .nav-links a:hover { color: #0d1b2e; background: #f4f6f8; }
+      .btn-nav-cta {
+        background: #e8a020 !important; color: #fff !important; font-weight: 600 !important;
+        padding: 8px 20px !important; border-radius: 4px !important; font-size: 0.85rem !important;
+        transition: background 0.15s !important;
+      }
+      .btn-nav-cta:hover { background: #cf8e16 !important; }
+      .btn-nav-signin {
+        border: 1.5px solid #0d1b2e !important; color: #0d1b2e !important; font-weight: 600 !important;
+        padding: 7px 18px !important; border-radius: 4px !important; font-size: 0.85rem !important;
+      }
+      .nav-toggler {
+        display: none; background: none; border: 1px solid #dde1e7;
+        border-radius: 4px; padding: 6px 10px; cursor: pointer; color: #4a5568;
+      }
+      @media (max-width: 640px) {
+        .nav-links { display: none; }
+        .nav-links.open {
+          display: flex; flex-direction: column;
+          position: absolute; top: 100%; left: 0; right: 0;
+          background: #fff; border-bottom: 1px solid #e2e8f0;
+          padding: 16px; z-index: 999;
+        }
+        .nav-toggler { display: block; }
+        .site-nav .inner { flex-wrap: wrap; gap: 12px; position: relative; }
+      }
+
+      /* ── Hero ── */
+      .hero {
+        background: linear-gradient(135deg, #0d1b2e 60%, #0f2540 100%);
+        color: #fff; padding: 88px 0 80px;
+      }
+      .hero-eyebrow {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em;
+        text-transform: uppercase; color: #e8a020; margin-bottom: 24px;
+      }
+      .hero-eyebrow::before {
+        content: ""; display: inline-block; width: 3px; height: 12px;
+        background: #e8a020; border-radius: 2px;
+      }
+      .hero h1 {
+        font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 800;
+        line-height: 1.1; margin-bottom: 0; color: #fff;
+      }
+      .hero h1 .accent { color: #e8a020; }
+      .hero-desc {
+        color: #8fa3bb; font-size: 1rem; line-height: 1.75;
+        margin-top: 22px; max-width: 540px;
+      }
+      .hero-actions { display: flex; align-items: center; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
+      .btn-hero-primary {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: #e8a020; color: #fff; border: none;
+        padding: 14px 28px; font-size: 0.82rem; font-weight: 700;
+        letter-spacing: 0.06em; text-transform: uppercase; border-radius: 4px;
+        text-decoration: none; transition: background 0.15s;
+      }
+      .btn-hero-primary:hover { background: #cf8e16; color: #fff; }
+      .btn-hero-outline {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.45);
+        padding: 13px 26px; font-size: 0.82rem; font-weight: 600;
+        letter-spacing: 0.06em; text-transform: uppercase; border-radius: 4px;
+        text-decoration: none; transition: border-color 0.15s, background 0.15s;
+      }
+      .btn-hero-outline:hover { border-color: #fff; background: rgba(255,255,255,0.07); color: #fff; }
+      .hero-badge {
+        display: inline-flex; align-items: center; gap: 6px; margin-top: 32px;
+        font-size: 0.78rem; color: #6a8aaa; font-weight: 500;
+      }
+      .hero-badge i { color: #e8a020; }
+
+      /* ── Stats Bar ── */
+      .stats-bar { background: #f0f3f6; border-bottom: 1px solid #dde3ea; }
+      .stats-bar .stats-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr); max-width: 860px;
+      }
+      .stat-item {
+        padding: 26px 20px; text-align: center;
+        border-right: 1px solid #dde3ea;
+      }
+      .stat-item:last-child { border-right: none; }
+      .stat-value { font-size: 1.7rem; font-weight: 800; color: #0d1b2e; line-height: 1; margin-bottom: 6px; }
+      .stat-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7a8299; }
+      @media (max-width: 700px) {
+        .stats-bar .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .stat-item:nth-child(2) { border-right: none; }
+        .stat-item:nth-child(3) { border-top: 1px solid #dde3ea; }
+        .stat-item:nth-child(4) { border-top: 1px solid #dde3ea; border-right: none; }
+      }
+
+      /* ── Section common ── */
+      .section-eyebrow {
+        font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+        text-transform: uppercase; color: #e8a020; margin-bottom: 16px;
+        display: flex; align-items: center; gap: 8px;
+      }
+      .section-eyebrow::before {
+        content: ""; display: inline-block; width: 3px; height: 11px;
+        background: #e8a020; border-radius: 2px;
+      }
+      .section-title { font-size: clamp(1.45rem, 3vw, 1.95rem); font-weight: 800; color: #0d1b2e; margin-bottom: 12px; }
+      .section-desc { color: #5a6580; font-size: 0.95rem; line-height: 1.65; max-width: 540px; margin-bottom: 48px; }
+
+      /* ── Features ── */
+      .features-section { background: #fff; padding: 72px 0; }
+      .features-grid {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+        border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden;
+      }
+      .feature-card {
+        padding: 32px 28px; border-right: 1px solid #e2e8f0;
+        background: #fff; transition: background 0.15s;
+      }
+      .feature-card:last-child { border-right: none; }
+      .feature-card:hover { background: #f8fafc; }
+      .feature-icon-box {
+        width: 38px; height: 38px; border: 1.5px solid #c0cfe0; border-radius: 4px;
+        display: flex; align-items: center; justify-content: center;
+        color: #4a6080; margin-bottom: 20px; font-size: 0.9rem;
+      }
+      .feature-card h3 {
+        font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em;
+        text-transform: uppercase; color: #0d1b2e; margin-bottom: 10px;
+      }
+      .feature-card p { font-size: 0.875rem; color: #5a6580; line-height: 1.65; }
+      @media (max-width: 900px) {
+        .features-grid { grid-template-columns: 1fr; }
+        .feature-card { border-right: none; border-bottom: 1px solid #e2e8f0; }
+        .feature-card:last-child { border-bottom: none; }
+      }
+
+      /* ── Process ── */
+      .process-section {
+        background: #f8fafc; padding: 72px 0;
+        border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
+      }
+      .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+      .process-step { padding: 0 36px 0 0; border-right: 1px solid #dde3ea; }
+      .process-step:first-child { padding-left: 0; }
+      .process-step:nth-child(2) { padding-left: 36px; }
+      .process-step:last-child { border-right: none; padding-right: 0; padding-left: 36px; }
+      .step-number { font-size: 2.6rem; font-weight: 800; color: #c8d4e0; line-height: 1; margin-bottom: 16px; }
+      .process-step h3 {
+        font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em;
+        text-transform: uppercase; color: #0d1b2e; margin-bottom: 10px;
+      }
+      .process-step p { font-size: 0.875rem; color: #5a6580; line-height: 1.65; }
+      @media (max-width: 860px) {
+        .process-grid { grid-template-columns: 1fr; gap: 40px; }
+        .process-step { border-right: none; border-bottom: 1px solid #dde3ea; padding: 0 0 40px 0 !important; }
+        .process-step:last-child { border-bottom: none; padding-bottom: 0 !important; }
+      }
+
+      /* ── CTA Section ── */
+      .cta-section { background: #0d1b2e; padding: 72px 0; }
+      .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+      .cta-left { max-width: 500px; }
+      .cta-eyebrow {
+        font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+        text-transform: uppercase; color: #e8a020; margin-bottom: 14px;
+      }
+      .cta-section h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 12px; }
+      .cta-desc { color: #7a93ab; font-size: 0.9rem; line-height: 1.6; }
+      .cta-buttons { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+      .btn-cta-primary {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: #e8a020; color: #fff; font-weight: 700;
+        font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+        padding: 16px 32px; border-radius: 4px; text-decoration: none;
+        border: none; cursor: pointer; transition: background 0.15s;
+      }
+      .btn-cta-primary:hover { background: #cf8e16; color: #fff; }
+      .btn-cta-outline {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: transparent; color: #fff; font-weight: 600;
+        font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+        padding: 15px 28px; border-radius: 4px; text-decoration: none;
+        border: 1.5px solid rgba(255,255,255,0.3); cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+      }
+      .btn-cta-outline:hover { border-color: #fff; background: rgba(255,255,255,0.06); color: #fff; }
+      @media (max-width: 860px) {
+        .cta-inner { flex-direction: column; align-items: flex-start; }
+      }
+
+      /* ── Footer ── */
+      .site-footer {
+        background: #0a1422; padding: 26px 0; border-top: 1px solid #1c2e42;
+      }
+      .footer-inner { display: flex; align-items: center; justify-content: space-between; }
+      .footer-brand .f-brand-name { font-weight: 700; font-size: 0.95rem; color: #fff; margin-bottom: 3px; }
+      .footer-brand .f-brand-sub  { font-size: 0.72rem; color: #5a7290; }
+      .footer-right { font-size: 0.78rem; color: #4a6080; }
+      @media (max-width: 600px) {
+        .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+        .features-section, .process-section { padding: 48px 0; }
+        .cta-section { padding: 48px 0; }
+        .hero { padding: 56px 0 52px; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+      <div class="inner">
+        <span class="accent-bar"></span>
+        <span>
+          DataVizAI — Survey Intelligence Platform
+          <span class="dots">·</span> AI-Powered Analysis
+          <span class="dots">·</span> Secure &amp; Encrypted
+        </span>
+      </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="site-nav">
+      <div class="inner">
+        <a class="nav-brand" href="/home">
+          <div class="nav-logo-box">DVZ</div>
+          <div>
+            <span class="brand-name">DataVizAI</span>
+            <span class="brand-sub">Survey Intelligence Platform</span>
+          </div>
+        </a>
+
+        <button class="nav-toggler" id="navToggler" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="/home" style="color:#e8a020;font-weight:600;">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#process">How It Works</a></li>
+          {% if current_user.is_authenticated %}
+            <li><a href="/" class="btn-nav-cta">
+              <i class="fas fa-table me-1"></i>Open App
+            </a></li>
+          {% else %}
+            <li><a href="/login" class="btn-nav-signin">Sign In</a></li>
+            <li><a href="/login?tab=signup" class="btn-nav-cta">Get Started</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-eyebrow">AI-Powered Survey Intelligence</div>
+        <h1>
+          Transform Data Into<br />
+          <span class="accent">Intelligence</span>
+        </h1>
+        <p class="hero-desc">
+          Upload your survey CSV microdata, Excel layout, and Schedule PDF — and get a fully
+          mapped metadata repository with field names, block numbers, question text,
+          and value labels in seconds.
+        </p>
+        <div class="hero-actions">
+          {% if current_user.is_authenticated %}
+            <a href="/" class="btn-hero-primary">
+              <i class="fas fa-table"></i> Open App
+            </a>
+          {% else %}
+            <a href="/login?tab=signup" class="btn-hero-primary">
+              <i class="fas fa-rocket"></i> Get Started Free
+            </a>
+            <a href="/login" class="btn-hero-outline">
+              <i class="fas fa-sign-in-alt"></i> Sign In
+            </a>
+          {% endif %}
+        </div>
+        <div class="hero-badge">
+          <i class="fas fa-shield-alt"></i>
+          Secure access &nbsp;·&nbsp; OTP email verification &nbsp;·&nbsp; Role-based access control
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">3</div>
+            <div class="stat-label">File Types</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Server-Side</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">&lt; 60s</div>
+            <div class="stat-label">Full Analysis</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">CSV + PDF</div>
+            <div class="stat-label">Export Formats</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+      <div class="container">
+        <div class="section-eyebrow">What We Offer</div>
+        <h2 class="section-title">Everything you need to understand your survey data</h2>
+        <p class="section-desc">
+          A complete toolkit that maps raw survey column codes to human-readable field names,
+          block references, question text, and coded value labels — in one unified table.
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-box"><i class="fas fa-file-csv"></i></div>
+            <h3>CSV Microdata Ingestion</h3>
+            <p>
+              Upload any survey microdata CSV. The app auto-detects encoding, extracts
+              unique <code>level</code> values, and reports column structure instantly.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-box"><i class="fas fa-table"></i></div>
+            <h3>Excel Layout Mapping</h3>
+            <p>
+              Parses the Data Layout Excel to map every column code (e.g. <code>b11c4</code>)
+              to its full field name, block number, item reference, and byte position.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-box"><i class="fas fa-file-pdf"></i></div>
+            <h3>PDF Schedule Codebook</h3>
+            <p>
+              Extracts "CODES FOR BLOCK N" sections from the Schedule PDF,
+              matching coded values (1 = Male, 2 = Female…) to every relevant column.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-box"><i class="fas fa-search"></i></div>
+            <h3>Searchable Metadata Table</h3>
+            <p>
+              A filterable, sortable table lets you quickly find any variable,
+              inspect its question text, and view all value labels in one place.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-box"><i class="fas fa-chart-bar"></i></div>
+            <h3>Analytics &amp; Reports</h3>
+            <p>
+              Generate interactive Plotly charts, statistical summaries, and
+              AI-powered insights. Export full HTML or PDF reports.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-box"><i class="fas fa-download"></i></div>
+            <h3>One-Click Export</h3>
+            <p>
+              Download the consolidated metadata repository as a clean CSV —
+              ready for documentation, codebook generation, or downstream analysis.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section" id="process">
+      <div class="container">
+        <div class="section-eyebrow">The Process</div>
+        <h2 class="section-title">From upload to insight in three steps</h2>
+        <p class="section-desc">
+          No technical expertise required. Upload your three files, press Process,
+          and get a fully enriched metadata table with codebook labels attached.
+        </p>
+
+        <div class="process-grid">
+          <div class="process-step">
+            <div class="step-number">01</div>
+            <h3>Upload Three Files</h3>
+            <p>
+              Provide your Survey Dataset CSV (microdata), the Data Layout Excel file
+              (column → field mapping), and the Schedule PDF (value codebook).
+            </p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">02</div>
+            <h3>Automated Processing</h3>
+            <p>
+              The engine parses all three files simultaneously — cross-linking column
+              codes, block numbers, item references, and PDF value labels with zero manual effort.
+            </p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">03</div>
+            <h3>Explore &amp; Export</h3>
+            <p>
+              Search, filter, and inspect the enriched metadata table. Export the full
+              repository to CSV or dive into charts and AI-generated reports.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-inner">
+          <div class="cta-left">
+            <div class="cta-eyebrow">Ready to Start?</div>
+            <h2>Unlock the power of your survey data</h2>
+            <p class="cta-desc">
+              Register in seconds and start mapping your datasets immediately.
+              OTP-verified, role-based, and ready for any survey workflow.
+            </p>
+          </div>
+          <div class="cta-buttons">
+            {% if current_user.is_authenticated %}
+              <a href="/" class="btn-cta-primary">
+                <i class="fas fa-table"></i> Open App
+              </a>
+            {% else %}
+              <a href="/login?tab=signup" class="btn-cta-primary">
+                <i class="fas fa-user-plus"></i> Create Account
+              </a>
+              <a href="/login" class="btn-cta-outline">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <div class="f-brand-name">DataVizAI</div>
+            <div class="f-brand-sub">Survey Intelligence Platform</div>
+          </div>
+          <div class="footer-right">
+            <i class="fas fa-lock me-1"></i>
+            Secure access — OTP verified &amp; role-controlled
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.getElementById("navToggler").addEventListener("click", () => {
+        document.getElementById("navLinks").classList.toggle("open");
+      });
+    </script>
+  </body>
+</html>
